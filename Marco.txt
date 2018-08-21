@@ -1,0 +1,357 @@
+Sub k1()
+
+
+Total = 3
+Save = 1
+Line = 200
+
+ Dim Wk As Workbook
+ Set Wk = Workbooks.Add
+ Application.DisplayAlerts = False
+ Wk.SaveAs Filename:="F:\SalesData.xls"
+
+
+
+
+
+
+For pg = 2 To (Total + 1)
+
+
+
+Dim sh As Worksheet
+On Error Resume Next
+Set sh = Sheets.Add
+With sh
+.Name = "Sheet" & pg
+End With
+
+Sheets("Sheet" & pg).Select
+ 
+
+x = "http://www.amazon.com/s/ref=sr_pg_2?me=ARDFJX6LL79YO&rh=i%3Amerchant-items&page=2&ie=UTF8&qid=1450378089"
+        k = CStr(pg)
+        j = 1
+        Do Until Mid(x, j, 4) = ""
+        Select Case Mid(x, j, 4)
+        Case Is = "_pg_"
+          Mid(x, j + 4, 1) = k
+        Case Is = "age="
+           Mid(x, j + 4, 1) = k
+        End Select
+        j = j + 1
+          
+        Loop
+
+
+
+  Add = "URL;" & x
+    Sheets("Sheet" & pg).Select
+    With ActiveSheet.QueryTables.Add(Connection:=Add, Destination:=Range("$A:$A"))
+        .Name = "www.amazon"
+        .FieldNames = True
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = False
+        .RefreshOnFileOpen = False
+        .BackgroundQuery = True
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .WebSelectionType = xlEntirePage
+        .WebFormatting = xlWebFormattingAll
+        .WebPreFormattedTextToColumns = True
+        .WebConsecutiveDelimitersAsOne = True
+        .WebSingleBlockTextImport = False
+        .WebDisableDateRecognition = False
+        .WebDisableRedirections = False
+        .Refresh BackgroundQuery:=False
+    End With
+Next
+    
+    
+    
+For SheetA = 2 To (pg - 1)
+
+Sheets("Sheet" & SheetA).Select
+Row = Range("A:A").Find("previous page").Row
+Range("A" & Row).Select
+ActiveWindow.SmallScroll Down:=100
+    Range(Selection, ActiveCell.SpecialCells(xlLastCell)).Select
+    Selection.ClearContents
+   
+For i = 3 To Line
+Sheets("Sheet" & SheetA).Select
+ 
+     Set cell1 = Range("A" & i)
+     Set cell2 = Range("A" & (i - 1))
+     Set cell3 = Range("A" & (i - 2))
+  
+     Set cell4 = Range("C" & i)
+     Set cell5 = Range("D" & i)
+     Set cell6 = Range("E" & i)
+   
+    
+    
+        Select Case Mid(cell1, 1, 1)
+        Case Is < "A"
+          
+        cell1.Select
+        Selection.Copy
+        cell6.Select
+        ActiveSheet.Paste
+        cell2.Select
+        Selection.Copy
+        cell4.Select
+        ActiveSheet.Paste
+        cell3.Select
+        Selection.Copy
+        cell5.Select
+        ActiveSheet.Paste
+        End Select
+           
+
+Next
+
+
+
+
+
+For i = 3 To Line
+
+ 
+     
+  Sheets("Sheet" & SheetA).Select
+     Set cell4 = Range("C" & i)
+     Set cell5 = Range("D" & i)
+     Set cell6 = Range("E" & i)
+   
+    j = 1
+    Do Until Mid(cell6, j, 1) = ""
+        Select Case Mid(cell6, j, 1)
+        Case Is = "t"
+          
+        cell4.Select
+        Selection.ClearContents
+        cell5.Select
+        Selection.ClearContents
+        cell6.Select
+        Selection.ClearContents
+        Case Is = "B"
+          
+        cell4.Select
+        Selection.ClearContents
+        cell5.Select
+        Selection.ClearContents
+        cell6.Select
+        Selection.ClearContents
+        Case Is = "D"
+          
+        cell4.Select
+        Selection.ClearContents
+        cell5.Select
+        Selection.ClearContents
+        cell6.Select
+        Selection.ClearContents
+        Case Is = "V"
+          
+        cell4.Select
+        Selection.ClearContents
+        cell5.Select
+        Selection.ClearContents
+        cell6.Select
+        Selection.ClearContents
+        
+        
+        
+        Case Is = "+"
+          
+        cell4.Select
+        Selection.ClearContents
+        cell5.Select
+        Selection.ClearContents
+        cell6.Select
+        Selection.ClearContents
+       
+    End Select
+    j = j + 1
+    Loop
+
+Next
+
+
+
+
+For i = 3 To Line
+
+ 
+     
+  Sheets("Sheet" & SheetA).Select
+     Set cell4 = Range("C" & i)
+     Set cell5 = Range("D" & i)
+     Set cell6 = Range("E" & i)
+   
+    
+  
+        Select Case Mid(cell4, 1, 2)
+        Case Is = "by"
+          
+        cell5.Select
+        Selection.Copy
+        cell4.Select
+        ActiveSheet.Paste
+
+       
+    End Select
+  
+
+Next
+
+n = Save
+For i = 3 To Line
+     Sheets("Sheet" & SheetA).Select
+     Set cell4 = Range("C" & i)
+     Set cell5 = Range("D" & i)
+     Set cell6 = Range("E" & i)
+    
+       If cell6.Value = "" Then
+              
+       Else
+        
+        Sheets("Sheet" & SheetA).Select
+        cell6.Select
+        Selection.Copy
+       
+        Sheets("Sheet1").Select
+        Range("B" & n).Select
+        ActiveSheet.Paste
+       
+        Sheets("Sheet" & SheetA).Select
+        cell4.Select
+        Selection.Copy
+        Sheets("Sheet1").Select
+        Range("A" & n).Select
+        ActiveSheet.Paste
+                       
+        n = n + 1
+        Save = n
+    End If
+  
+
+Next
+        
+Next
+
+
+
+For i = 2 To ThisWorkbook.Sheets.Count
+    Application.DisplayAlerts = False
+    Sheets("Sheet" & i).Select
+    ActiveWindow.SelectedSheets.Delete
+    Application.DisplayAlerts = True
+Next
+
+
+Sheets("Sheet" & 1).Select
+lastrow = Range("B65536").End(xlUp).Row
+For Each cell In Range("B1:B70")
+cell.Offset(0, 1) = cell.Hyperlinks(1).Address
+Next
+
+ 
+ActiveWorkbook.Save
+ActiveWorkbook.Close
+    
+    
+    
+    
+    
+    
+    Dim fname As String
+    fname = "F:\SalesData.xls"
+    Workbooks.Open Filename:=fname, ReadOnly:=False
+  
+
+
+For Line = 1 To 10
+
+k = Range("C" & Line).Value
+
+Address = "URL;" & k
+
+L = Line + 1
+
+
+
+Dim sh1 As Worksheet
+On Error Resume Next
+Set sh1 = Sheets.Add
+With sh1
+.Name = "Sheet" & L
+End With
+Sheets("Sheet" & L).Select
+ 
+
+With ActiveSheet.QueryTables.Add(Connection:=Address, Destination:=Range("$A:$A"))
+     .Name = "www.amazon"
+        .FieldNames = True
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = False
+        .RefreshOnFileOpen = False
+        .BackgroundQuery = True
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .WebSelectionType = xlEntirePage
+        .WebFormatting = xlWebFormattingAll
+        .WebPreFormattedTextToColumns = True
+        .WebConsecutiveDelimitersAsOne = True
+        .WebSingleBlockTextImport = False
+        .WebDisableDateRecognition = False
+        .WebDisableRedirections = False
+        .Refresh BackgroundQuery:=False
+        
+    End With
+
+
+
+Row = Range("A:A").Find("asin").Row
+
+Sheets("Sheet" & L).Select
+Range("A" & Row).Select
+
+Selection.Copy
+
+Sheets("Sheet" & 1).Select
+        Range("D" & Line).Select
+        ActiveSheet.Paste
+        
+        
+        
+        
+Sheets("Sheet" & L).Select
+Range("B" & Row).Select
+
+Selection.Copy
+
+Sheets("Sheet" & 1).Select
+        Range("E" & Line).Select
+        ActiveSheet.Paste
+        
+
+Next
+
+Columns("C:C").Select
+    Selection.Cut
+    Columns("J:J").Select
+    ActiveSheet.Paste
+    
+
+End Sub
+
+
